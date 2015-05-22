@@ -1,0 +1,122 @@
+﻿@model RedSocial.Dominio.Seguridad.Usuario
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutRedSocial.cshtml";
+}
+<link href="~/Content/estilos.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+
+        $("#correo").on("blur", function () {
+
+            var correo = $('#correo').val();
+            $.get('../Usuario/ValidarCorreo', { correoValidar: correo }, function (data) {
+
+                if (data.estado != 'OK') {
+
+                    $('#guardar').attr('disable', 'disable');
+                    $('#mensajeEmail').addClass("alert alert-danger");
+                    $('#mensajeEmail').removeClass('esconder');
+                } else {
+                    $('#guardar').removeAttr('disable');
+                    $('#mensajeEmail').removeClass("alert alert-danger");
+                    $('#mensajeEmail').addClass('esconder');
+                }
+            });
+        });
+    });
+</script>
+                
+
+
+<div class="container">
+    <div class="row clearfix" id="contenidohome">
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <div class="col-md-8 column">
+                    @using (Html.BeginForm("CrearCuenta", "Usuario", FormMethod.Post, new { EncType = "multipart/form-data" }))
+                    {
+
+                        <div class="form-horizontal">
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.Apellidos, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    <input type="email" name="Email" value=" " placeholder="Ejemplo@gmail.com" class="form-control" id="correo" />
+                                    @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+
+                                   <br />
+                                    <span id="mensajeEmail" class="esconder">este correo ya existe</span>
+                                   
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Foto, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    <input type="file" name="Foto" value=" " class="form-control" />
+                                    @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Contraseña, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    @Html.PasswordFor(model => model.Contraseña, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ConfirmacionContraseña, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    @Html.PasswordFor(model => model.ConfirmacionContraseña, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ConfirmacionContraseña, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <input type="submit" name="" value="Crear Cuenta" class="btn-primary" id="guardar" />
+
+                        </div>
+                    }
+                </div>
+                <div class="col-md-4 column">
+                    <h3></h3> <button type="button" class="btn active btn-block btn-primary btn-lg">Conectar con facebook</button>
+                    <h3></h3> <button type="button" class="btn active btn-block btn-lg btn-info">conectar con twitter</button>
+                </div>
+            </div>
+            <br />
+            <br />
+        </div>
+    </div>
+</div>
+
+
+
+
